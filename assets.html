@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asset Flow Documentation</title>
+  <script src="./script.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jointjs@3.7.7/dist/joint.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.5.0/backbone-min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jointjs@3.7.7/dist/joint.min.js"></script>
+  <script src="./diagrams.js"></script>
+  <style>
+    html.dark body {
+      background-color: #0d1117 !important;
+      color: #f1f5f9 !important;
+    }
+
+    html:not(.dark) body {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+
+    html:not(.dark) .dark\:text-white,
+    html:not(.dark) .dark\:text-slate-100,
+    html:not(.dark) .dark\:text-slate-200,
+    html:not(.dark) .dark\:text-slate-300,
+    html:not(.dark) .dark\:text-slate-400,
+    html:not(.dark) .dark\:text-amber-100,
+    html:not(.dark) .dark\:text-amber-200 {
+      color: inherit !important;
+    }
+
+    .bg-accent {
+      background-color: #0ea5a4 !important;
+    }
+
+    .text-accent {
+      color: #0ea5a4 !important;
+    }
+
+    .border-accent\/30 {
+      border-color: rgba(14, 165, 164, .3) !important;
+    }
+
+    .border-accent\/40 {
+      border-color: rgba(14, 165, 164, .4) !important;
+    }
+
+    .bg-accent\/10 {
+      background-color: rgba(14, 165, 164, .1) !important;
+    }
+
+    .hover\:border-accent:hover {
+      border-color: #0ea5a4 !important;
+    }
+
+    .hover\:text-accent:hover {
+      color: #0ea5a4 !important;
+    }
+
+    .border-amberline {
+      border-color: #f2b84b !important;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 18px 42px rgba(15, 23, 42, .12) !important;
+    }
+
+    .dark .dark\:bg-night {
+      background-color: #0d1117 !important;
+    }
+
+    .dark .dark\:bg-night\/90 {
+      background-color: rgba(13, 17, 23, .9) !important;
+    }
+
+    .dark .dark\:bg-panel {
+      background-color: #151b23 !important;
+    }
+
+    .dark .dark\:bg-panel\/95 {
+      background-color: rgba(21, 27, 35, .95) !important;
+    }
+
+    .flow-arrow::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      top: 50%;
+      width: 28px;
+      height: 2px;
+      background: currentColor;
+      transform: translateY(-50%);
+      opacity: .55;
+    }
+
+    .flow-arrow::before {
+      content: "";
+      position: absolute;
+      right: -36px;
+      top: 50%;
+      width: 9px;
+      height: 9px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+      transform: translateY(-50%) rotate(45deg);
+      opacity: .55;
+    }
+
+    @media (max-width: 1023px) {
+      .flow-arrow::after,
+      .flow-arrow::before {
+        display: none;
+      }
+    }
+
+    .nav-link.active,
+    .nav-link.active:hover,
+    .dark .nav-link.active,
+    .dark .nav-link.active:hover {
+      background: #0ea5a4;
+      color: #fff;
+    }
+
+    .nav-link.active i {
+      color: #fff;
+    }
+
+    .joint-diagram {
+      min-height: 320px;
+      overflow-x: auto;
+    }
+
+    .joint-diagram svg {
+      display: block;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-night dark:text-slate-100">
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 -translate-x-full border-r border-slate-200 bg-white/95 backdrop-blur transition-transform duration-200 dark:border-slate-800 dark:bg-panel/95 lg:translate-x-0">
+    <div class="flex h-full flex-col">
+      <div class="border-b border-slate-200 px-5 py-5 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-lg bg-accent text-white shadow-soft">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wide text-accent">Shield Flow</p>
+            <h1 class="text-lg font-semibold leading-tight">Flow Docs</h1>
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto px-3 py-4 text-sm font-medium" aria-label="Shield flow documentation">
+        <a class="flex items-center gap-3 rounded-md bg-slate-100 px-3 py-2 font-semibold text-slate-950 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700" href="./index.html">
+          <i class="fa-solid fa-shield-halved w-5 text-center text-accent"></i>
+          Security
+        </a>
+
+        <a class="mt-5 flex items-center gap-3 rounded-md bg-accent px-3 py-2 font-semibold text-white" href="./assets.html">
+          <i class="fa-solid fa-truck-ramp-box w-5 text-center text-white"></i>
+          Asset Flow
+        </a>
+
+        <div class="ml-5 mt-2 space-y-1 border-l border-slate-200 pl-3 dark:border-slate-700">
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#asset-overview">
+            <i class="fa-solid fa-boxes-stacked w-5 text-center text-accent"></i>
+            Overview
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#asset-state">
+            <i class="fa-solid fa-route w-5 text-center text-accent"></i>
+            State Model
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#asset-company-movement">
+            <i class="fa-solid fa-right-left w-5 text-center text-accent"></i>
+            Device Movement
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#asset-subscription-binding">
+            <i class="fa-solid fa-link w-5 text-center text-accent"></i>
+            Subscription Binding
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#asset-rules">
+            <i class="fa-solid fa-list-check w-5 text-center text-accent"></i>
+            Operational Rules
+          </a>
+        </div>
+      </nav>
+
+      <div class="border-t border-slate-200 p-4 dark:border-slate-800">
+        <div class="rounded-md border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-600 dark:border-slate-700 dark:bg-slate-900/55 dark:text-slate-400">
+          <p class="font-semibold text-slate-800 dark:text-slate-200">Core rule</p>
+          <p>Move ownership with device transfer; bind usage with subscriptions.</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-950/50 lg:hidden"></div>
+
+  <main class="lg:ml-72">
+    <header class="sticky top-0 z-20 border-b border-slate-200 bg-slate-50/90 backdrop-blur dark:border-slate-800 dark:bg-night/90">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <button id="menuButton" class="grid h-10 w-10 place-items-center rounded-md border border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-panel dark:text-slate-200 lg:hidden" aria-label="Open navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="min-w-0">
+          <p class="text-xs font-semibold uppercase tracking-wide text-accent">Operational asset model</p>
+          <p class="truncate text-base font-semibold sm:text-lg">Company, device, vehicle, and subscription flow</p>
+        </div>
+        <button id="themeToggle" class="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-slate-200 bg-white text-slate-700 transition hover:border-accent hover:text-accent dark:border-slate-700 dark:bg-panel dark:text-slate-200" aria-label="Toggle dark mode">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <section id="asset-overview" class="mb-12 scroll-mt-20">
+        <div class="mb-5 flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-accent">Operational assets</p>
+            <h2 class="text-2xl font-bold">Company, Device, Vehicle, and Subscription Flow</h2>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="grid gap-4 xl:grid-cols-4">
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">Company</h3>
+                <i class="fa-solid fa-building text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">The ownership boundary for operational assets. Companies form a root, agency, and dealer hierarchy through <code class="font-mono text-accent">parentId</code>, <code class="font-mono text-accent">treeId</code>, and type flags such as <code class="font-mono text-accent">isSystem</code>, <code class="font-mono text-accent">isAgency</code>, and <code class="font-mono text-accent">isDealer</code>.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">company.type.ts:12</code> / <code class="font-mono">company-create-update-dialog.component.ts:119</code></p>
+            </article>
+
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">Device</h3>
+                <i class="fa-solid fa-microchip text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">The physical tracker or camera-capable unit. It has a current <code class="font-mono text-accent">companyId</code>, can be transferred between companies, and may later be bound into a subscription and vehicle.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">device.type.ts:37</code> / <code class="font-mono">device.api.service.ts:122</code></p>
+            </article>
+
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">Vehicle</h3>
+                <i class="fa-solid fa-car-side text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">The logical vehicle record inside a company. It is created with plate, type, group, speed, and registry metadata. It becomes connected to a device through subscription assignment, not through a standalone device-to-vehicle endpoint in the reviewed frontend.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">vehicle.type.ts:25</code> / <code class="font-mono">vehicle.api.service.ts:46</code></p>
+            </article>
+
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">Subscription</h3>
+                <i class="fa-solid fa-file-invoice-dollar text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">The binding record. It carries <code class="font-mono text-accent">companyId</code>, <code class="font-mono text-accent">subscriptionTypeId</code>, <code class="font-mono text-accent">deviceId</code>, <code class="font-mono text-accent">vehicleId</code>, and intervals. Its assign and unassign endpoints change the device or vehicle link while keeping the company scope.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">subscription.type.ts:3</code> / <code class="font-mono">subscription.api.service.ts:108</code></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="asset-state" class="mb-12 scroll-mt-20">
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wide text-accent">State model</p>
+              <h2 class="text-2xl font-bold">How an asset becomes usable</h2>
+            </div>
+            <i class="fa-solid fa-route text-accent"></i>
+          </div>
+
+          <div class="grid gap-4 lg:grid-cols-5">
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <i class="fa-solid fa-warehouse mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Root inventory</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Unassigned root stock is loaded from <code class="font-mono text-accent">/devices/free</code>.</p>
+            </div>
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <i class="fa-solid fa-building-user mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Company stock</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The device is moved to a company with <code class="font-mono text-accent">swap-single</code>, <code class="font-mono text-accent">swap-device-back</code>, or asset transfer.</p>
+            </div>
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <i class="fa-solid fa-box-open mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Free in company</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Assignment dialogs load free same-company devices and vehicles before creating links.</p>
+            </div>
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <i class="fa-solid fa-link mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Subscription bound</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">A subscription attaches one device and one vehicle to a subscription type.</p>
+            </div>
+            <div class="rounded-lg border border-accent/40 bg-accent/10 p-4">
+              <i class="fa-solid fa-satellite-dish mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Active unit</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300"><code class="font-mono text-accent">activeDate</code> represents the full subscription plus vehicle state; <code class="font-mono text-accent">assignDate</code> represents subscription-only assignment.</p>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/55">
+            <div id="assetLifecycleDiagram" class="joint-diagram" aria-label="Asset lifecycle diagram"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="asset-company-movement" class="mb-12 scroll-mt-20">
+        <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="mb-4 flex items-center gap-3">
+            <span class="grid h-9 w-9 place-items-center rounded-md bg-accent text-sm font-bold text-white">1</span>
+            <h2 class="text-2xl font-bold">Moving devices between companies</h2>
+          </div>
+
+          <div class="grid gap-4 lg:grid-cols-2">
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Root inventory transfer</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The company device inventory tab opens the root transfer dialog. It loads source devices from <code class="font-mono text-accent">getFreeRootDevices()</code>, target-company free devices from <code class="font-mono text-accent">getFreeDevices(companyId)</code>, moves selected root devices with <code class="font-mono text-accent">swapDeviceSingle()</code>, and returns devices to root with <code class="font-mono text-accent">swapDeviceBack()</code>.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">company-detail-device-inventory.component.ts:193</code> / <code class="font-mono">device-root-transfer-dialog.component.ts:239</code></p>
+            </div>
+
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Parent and child company swap</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The company device tab opens the device swap dialog. In a two-tier tree, the source list is the parent company or root; in a three-tier tree, the dialog parses <code class="font-mono text-accent">treeId</code> and lets devices move from tier 1 or tier 2 into the target tier 3 company. Returning uses the matching <code class="font-mono text-accent">swapDeviceBack()</code> path.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">device-swap-dialog.component.ts:57</code> / <code class="font-mono">device-swap-dialog.component.ts:391</code> / <code class="font-mono">device-swap-dialog.component.ts:467</code></p>
+            </div>
+
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Direct asset move</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Selected devices can be sent to another non-system company through <code class="font-mono text-accent">/devices/swap-assets-to-company</code>. The target picker hides the current company and system company. This flow passes selected device ids directly, so backend validation decides whether an already-linked device may move.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">company-detail-device.component.ts:277</code> / <code class="font-mono">device-swap-asset-dialog.component.ts:177</code></p>
+            </div>
+
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Auto move and provision</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The auto swap dialog sends <code class="font-mono text-accent">fromCompanyId</code>, <code class="font-mono text-accent">toCompanyId</code>, and per-device items containing <code class="font-mono text-accent">deviceId</code>, <code class="font-mono text-accent">subscriptionTypeId</code>, and <code class="font-mono text-accent">plateNumber</code>. This is the one-step move where the backend can also create or bind the vehicle/subscription relationship.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">swap-device-auto-dialog.component.ts:204</code> / <code class="font-mono">device.api.service.ts:129</code></p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="asset-subscription-binding" class="mb-12 scroll-mt-20">
+        <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="mb-4 flex items-center gap-3">
+            <span class="grid h-9 w-9 place-items-center rounded-md bg-accent text-sm font-bold text-white">2</span>
+            <h2 class="text-2xl font-bold">Binding devices, vehicles, and subscriptions</h2>
+          </div>
+
+          <div class="grid gap-4 lg:grid-cols-2">
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Create the vehicle in the company first</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Vehicle create and update are company-scoped. The form submits <code class="font-mono text-accent">companyId</code> with plate, vehicle type, group, max speed, and optional metadata.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">vehicle-create-update-dialog.component.ts:312</code> / <code class="font-mono">vehicle.api.service.ts:46</code></p>
+            </div>
+
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Create or update the subscription</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Subscription create loads free devices and free vehicles for the same <code class="font-mono text-accent">companyId</code>. Create requires <code class="font-mono text-accent">companyId</code>, <code class="font-mono text-accent">subscriptionTypeId</code>, <code class="font-mono text-accent">deviceId</code>, and <code class="font-mono text-accent">vehicleId</code>. Update changes type, device, vehicle, intervals, and description, but not the company.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">subscription-create-update-dialog.component.ts:214</code> / <code class="font-mono">subscription-create-update-dialog.component.ts:344</code> / <code class="font-mono">subscription.type.ts:14</code></p>
+            </div>
+
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Attach or detach from the subscriptions tab</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">If a subscription is missing a device or vehicle, the table opens assignment dialogs. Device assignment loads <code class="font-mono text-accent">getFreeDevices(companyId)</code> and posts to <code class="font-mono text-accent">/subscriptions/assign-device</code>. Vehicle assignment loads <code class="font-mono text-accent">getFreeVehicles(companyId)</code> and posts to <code class="font-mono text-accent">/subscriptions/assign-vehicle</code>. Removal posts to the subscription-specific unassign endpoints.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">company-detail-subscriptions.component.ts:192</code> / <code class="font-mono">subscription-device-assignment-dialog.component.ts:107</code> / <code class="font-mono">subscription.api.service.ts:92</code></p>
+            </div>
+
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <p class="font-semibold">Assign selected devices from the devices tab</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The device assign dialog filters selected devices to <code class="font-mono text-accent">!device.isAssigned</code>, loads free vehicles in the same company, and sends <code class="font-mono text-accent">swapDeviceAuto()</code> with identical <code class="font-mono text-accent">fromCompanyId</code> and <code class="font-mono text-accent">toCompanyId</code>. Each device item selects a subscription type and either an existing free <code class="font-mono text-accent">vehicleId</code> or a new <code class="font-mono text-accent">plateNumber</code>.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">company-detail-device.component.ts:251</code> / <code class="font-mono">device-assign-dialog.component.ts:279</code> / <code class="font-mono">device-assign-dialog.component.ts:309</code></p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="asset-rules" class="scroll-mt-20">
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wide text-accent">Rules</p>
+              <h2 class="text-2xl font-bold">Operational rules to keep straight</h2>
+            </div>
+            <i class="fa-solid fa-list-check text-accent"></i>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <i class="fa-solid fa-building-lock mb-3 text-accent"></i>
+              <p class="font-semibold">Company scope comes first</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Devices, vehicles, and subscriptions are all filtered by <code class="font-mono text-accent">companyId</code> before assignment.</p>
+            </div>
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <i class="fa-solid fa-link mb-3 text-accent"></i>
+              <p class="font-semibold">Subscription is the connector</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The reviewed frontend does not expose a simple direct device-to-vehicle assignment endpoint. The relationship is created through subscriptions or <code class="font-mono text-accent">swap-auto</code>.</p>
+            </div>
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <i class="fa-solid fa-box-open mb-3 text-accent"></i>
+              <p class="font-semibold">Free lists drive assignment</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Assignment forms load <code class="font-mono text-accent">/devices/free-company</code> and <code class="font-mono text-accent">/vehicles/free</code>, preventing the user from selecting resources already linked elsewhere.</p>
+            </div>
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <i class="fa-solid fa-right-left mb-3 text-accent"></i>
+              <p class="font-semibold">Move and bind are separate</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300"><code class="font-mono text-accent">swap-single</code>, <code class="font-mono text-accent">swap-device-back</code>, and asset transfer change company ownership. Subscription assign and unassign change the binding.</p>
+            </div>
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <i class="fa-solid fa-circle-half-stroke mb-3 text-accent"></i>
+              <p class="font-semibold">Assigned is not always active</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">For devices, <code class="font-mono text-accent">assignDate</code> means subscription only; <code class="font-mono text-accent">activeDate</code> means subscription plus vehicle.</p>
+            </div>
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <i class="fa-solid fa-server mb-3 text-accent"></i>
+              <p class="font-semibold">Backend is final authority</p>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The frontend shapes choices and calls the correct endpoints, but business conflicts such as moving a linked asset are enforced by backend responses.</p>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-md border-l-4 border-amberline bg-amber-50 p-4 text-sm leading-6 text-amber-950 dark:bg-amber-500/10 dark:text-amber-100">
+            <p><strong>Key point:</strong> a device moves between companies as an owned asset, then becomes useful to tracking through a subscription that connects it with a vehicle. Removing a device or vehicle from a subscription frees the link; it does not move the asset to another company.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

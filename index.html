@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shield Flow Documentation</title>
+  <script src="./script.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    html.dark body {
+      background-color: #0d1117 !important;
+      color: #f1f5f9 !important;
+    }
+
+    html:not(.dark) body {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+
+    html:not(.dark) .dark\:text-white,
+    html:not(.dark) .dark\:text-slate-100,
+    html:not(.dark) .dark\:text-slate-200,
+    html:not(.dark) .dark\:text-slate-300,
+    html:not(.dark) .dark\:text-slate-400,
+    html:not(.dark) .dark\:text-amber-100,
+    html:not(.dark) .dark\:text-amber-200 {
+      color: inherit !important;
+    }
+
+    .bg-accent {
+      background-color: #0ea5a4 !important;
+    }
+
+    .text-accent {
+      color: #0ea5a4 !important;
+    }
+
+    .border-accent\/30 {
+      border-color: rgba(14, 165, 164, .3) !important;
+    }
+
+    .border-accent\/40 {
+      border-color: rgba(14, 165, 164, .4) !important;
+    }
+
+    .bg-accent\/10 {
+      background-color: rgba(14, 165, 164, .1) !important;
+    }
+
+    .hover\:border-accent:hover {
+      border-color: #0ea5a4 !important;
+    }
+
+    .hover\:text-accent:hover {
+      color: #0ea5a4 !important;
+    }
+
+    .border-amberline {
+      border-color: #f2b84b !important;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 18px 42px rgba(15, 23, 42, .12) !important;
+    }
+
+    .dark .dark\:bg-night {
+      background-color: #0d1117 !important;
+    }
+
+    .dark .dark\:bg-night\/90 {
+      background-color: rgba(13, 17, 23, .9) !important;
+    }
+
+    .dark .dark\:bg-panel {
+      background-color: #151b23 !important;
+    }
+
+    .dark .dark\:bg-panel\/95 {
+      background-color: rgba(21, 27, 35, .95) !important;
+    }
+
+    .flow-arrow::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      top: 50%;
+      width: 28px;
+      height: 2px;
+      background: currentColor;
+      transform: translateY(-50%);
+      opacity: .55;
+    }
+
+    .flow-arrow::before {
+      content: "";
+      position: absolute;
+      right: -36px;
+      top: 50%;
+      width: 9px;
+      height: 9px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+      transform: translateY(-50%) rotate(45deg);
+      opacity: .55;
+    }
+
+    @media (max-width: 1023px) {
+      .flow-arrow::after,
+      .flow-arrow::before {
+        display: none;
+      }
+    }
+
+    .nav-link.active,
+    .nav-link.active:hover,
+    .dark .nav-link.active,
+    .dark .nav-link.active:hover {
+      background: #0ea5a4;
+      color: #fff;
+    }
+
+    .nav-link.active i {
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-night dark:text-slate-100">
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 -translate-x-full border-r border-slate-200 bg-white/95 backdrop-blur transition-transform duration-200 dark:border-slate-800 dark:bg-panel/95 lg:translate-x-0">
+    <div class="flex h-full flex-col">
+      <div class="border-b border-slate-200 px-5 py-5 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-lg bg-accent text-white shadow-soft">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wide text-accent">Shield Flow</p>
+            <h1 class="text-lg font-semibold leading-tight">Flow Docs</h1>
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto px-3 py-4 text-sm font-medium" aria-label="Shield flow documentation">
+        <a class="flex items-center gap-3 rounded-md bg-accent px-3 py-2 font-semibold text-white" href="./index.html">
+          <i class="fa-solid fa-shield-halved w-5 text-center text-white"></i>
+          Security
+        </a>
+
+        <div class="ml-5 mt-2 space-y-1 border-l border-slate-200 pl-3 dark:border-slate-700">
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#overview">
+            <i class="fa-solid fa-diagram-project w-5 text-center text-accent"></i>
+            Overview
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#mental-model">
+            <i class="fa-solid fa-brain w-5 text-center text-accent"></i>
+            Mental Model
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#runtime-flow">
+            <i class="fa-solid fa-route w-5 text-center text-accent"></i>
+            Runtime Security Flow
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#entity-flow">
+            <i class="fa-solid fa-layer-group w-5 text-center text-accent"></i>
+            Entity Flow
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#effective-flow">
+            <i class="fa-solid fa-code-merge w-5 text-center text-accent"></i>
+            Effective Flow
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#effective-permissions">
+            <i class="fa-solid fa-key w-5 text-center text-accent"></i>
+            Effective Permissions
+          </a>
+          <a class="nav-link flex items-center gap-3 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white" href="#nuances">
+            <i class="fa-solid fa-circle-info w-5 text-center text-accent"></i>
+            Important Nuances
+          </a>
+        </div>
+
+        <a class="mt-5 flex items-center gap-3 rounded-md bg-slate-100 px-3 py-2 font-semibold text-slate-950 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700" href="./assets.html">
+          <i class="fa-solid fa-truck-ramp-box w-5 text-center text-accent"></i>
+          Asset Flow
+        </a>
+      </nav>
+
+      <div class="border-t border-slate-200 p-4 dark:border-slate-800">
+        <div class="rounded-md border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-600 dark:border-slate-700 dark:bg-slate-900/55 dark:text-slate-400">
+          <p class="font-semibold text-slate-800 dark:text-slate-200">Core rule</p>
+          <p>Frontend checks the signed-in profile's flattened <code class="font-mono text-accent">permissionIds</code>.</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div id="overlay" class="fixed inset-0 z-30 hidden bg-slate-950/50 lg:hidden"></div>
+
+  <main class="lg:ml-72">
+    <header class="sticky top-0 z-20 border-b border-slate-200 bg-slate-50/90 backdrop-blur dark:border-slate-800 dark:bg-night/90">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <button id="menuButton" class="grid h-10 w-10 place-items-center rounded-md border border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-panel dark:text-slate-200 lg:hidden" aria-label="Open navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="min-w-0">
+          <p class="text-xs font-semibold uppercase tracking-wide text-accent">Frontend observable model</p>
+          <p class="truncate text-base font-semibold sm:text-lg">Permission, role, usergroup, and user flow</p>
+        </div>
+        <button id="themeToggle" class="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-slate-200 bg-white text-slate-700 transition hover:border-accent hover:text-accent dark:border-slate-700 dark:bg-panel dark:text-slate-200" aria-label="Toggle dark mode">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <section id="overview" class="mb-10">
+        <div class="grid gap-6 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+          <div>
+            <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-accent">Security flow</p>
+            <h2 class="max-w-3xl text-3xl font-bold tracking-normal text-slate-950 dark:text-white sm:text-4xl">Frontend authorization is driven by effective permissions, not role names.</h2>
+            <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
+              This document captures the frontend-observable security flow in this repo. The backend may enforce extra rules, but the frontend models visibility and access through the current profile's flattened permission set.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              <span class="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 dark:border-slate-700 dark:bg-panel dark:text-slate-300">Route access</span>
+              <span class="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 dark:border-slate-700 dark:bg-panel dark:text-slate-300">Menu visibility</span>
+              <span class="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 dark:border-slate-700 dark:bg-panel dark:text-slate-300">Button visibility</span>
+              <span class="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 dark:border-slate-700 dark:bg-panel dark:text-slate-300">Profile permissions</span>
+            </div>
+          </div>
+
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <div class="mb-4 flex items-center justify-between">
+              <h3 class="text-base font-semibold">Frontend Authorization Lens</h3>
+              <i class="fa-solid fa-eye text-accent"></i>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start gap-3 rounded-md bg-slate-50 p-3 dark:bg-slate-900/55">
+                <i class="fa-solid fa-user-check mt-1 text-accent"></i>
+                <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">The signed-in profile is loaded from <code class="font-mono text-accent">/users/me</code>.</p>
+              </div>
+              <div class="flex items-start gap-3 rounded-md bg-slate-50 p-3 dark:bg-slate-900/55">
+                <i class="fa-solid fa-list-check mt-1 text-accent"></i>
+                <p class="text-sm leading-6 text-slate-700 dark:text-slate-300"><code class="font-mono text-accent">ProfileService.profile()</code> stores the flattened <code class="font-mono text-accent">permissionIds</code>.</p>
+              </div>
+              <div class="flex items-start gap-3 rounded-md bg-slate-50 p-3 dark:bg-slate-900/55">
+                <i class="fa-solid fa-lock-open mt-1 text-accent"></i>
+                <p class="text-sm leading-6 text-slate-700 dark:text-slate-300"><code class="font-mono text-accent">PermissionService</code> checks those ids for routes, menus, buttons, and sections.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="mental-model" class="mb-12 scroll-mt-20">
+        <div class="mb-5 flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-accent">Model</p>
+            <h2 class="text-2xl font-bold">Mental Model</h2>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="grid gap-4 lg:grid-cols-6">
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 text-slate-700 dark:border-slate-700 dark:bg-slate-900/55 dark:text-slate-200">
+              <i class="fa-solid fa-fingerprint mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Permission</h3>
+              <p class="mt-1 text-sm leading-5 text-slate-600 dark:text-slate-400">Atomic capability</p>
+            </div>
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 text-slate-700 dark:border-slate-700 dark:bg-slate-900/55 dark:text-slate-200">
+              <i class="fa-solid fa-user-shield mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Role</h3>
+              <p class="mt-1 text-sm leading-5 text-slate-600 dark:text-slate-400">Application or client scoped</p>
+            </div>
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 text-slate-700 dark:border-slate-700 dark:bg-slate-900/55 dark:text-slate-200">
+              <i class="fa-solid fa-people-group mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">UserGroup</h3>
+              <p class="mt-1 text-sm leading-5 text-slate-600 dark:text-slate-400">Company scoped</p>
+            </div>
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 text-slate-700 dark:border-slate-700 dark:bg-slate-900/55 dark:text-slate-200">
+              <i class="fa-solid fa-user mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">User</h3>
+              <p class="mt-1 text-sm leading-5 text-slate-600 dark:text-slate-400">Assigned bundles</p>
+            </div>
+            <div class="flow-arrow relative rounded-lg border border-slate-200 bg-slate-50 p-4 text-slate-700 dark:border-slate-700 dark:bg-slate-900/55 dark:text-slate-200">
+              <i class="fa-solid fa-server mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Backend</h3>
+              <p class="mt-1 text-sm leading-5 text-slate-600 dark:text-slate-400">Returns effective ids</p>
+            </div>
+            <div class="rounded-lg border border-accent/30 bg-accent/10 p-4 text-slate-800 dark:text-slate-100">
+              <i class="fa-solid fa-display mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Frontend</h3>
+              <p class="mt-1 text-sm leading-5 text-slate-600 dark:text-slate-300">Uses ids for visibility</p>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-md border-l-4 border-amberline bg-amber-50 p-4 text-sm leading-6 text-amber-950 dark:bg-amber-500/10 dark:text-amber-100">
+            <p><strong>Key point:</strong> the frontend does not authorize from roles directly. It authorizes from the current profile's flattened <code class="font-mono">permissionIds</code>, loaded into <code class="font-mono">ProfileService</code> and checked through <code class="font-mono">PermissionService</code>.</p>
+            <p class="mt-2 text-xs text-amber-800 dark:text-amber-200">References: <code class="font-mono">profile.service.ts:9</code>, <code class="font-mono">permission.service.ts:10</code></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="runtime-flow" class="mb-12 scroll-mt-20">
+        <div class="mb-5 flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
+            <i class="fa-solid fa-route"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-accent">Runtime</p>
+            <h2 class="text-2xl font-bold">Runtime Security Flow</h2>
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <div class="flex items-center gap-3">
+              <span class="grid h-9 w-9 place-items-center rounded-md bg-accent text-sm font-bold text-white">1</span>
+              <h3 class="text-lg font-semibold">Login and Token Storage</h3>
+            </div>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Login calls <code class="font-mono text-accent">/auth/admin/login</code>, stores <code class="font-mono text-accent">access_token</code> and <code class="font-mono text-accent">refresh_token</code>, then navigates into the app.</p>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">login.component.ts:52</code> / <code class="font-mono">auth.service.ts:35</code></p>
+          </article>
+
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <div class="flex items-center gap-3">
+              <span class="grid h-9 w-9 place-items-center rounded-md bg-accent text-sm font-bold text-white">2</span>
+              <h3 class="text-lg font-semibold">Identity and Permissions Load</h3>
+            </div>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300"><code class="font-mono text-accent">AuthGuard</code> checks token presence only. User identity and permissions are loaded from <code class="font-mono text-accent">/users/me</code> into <code class="font-mono text-accent">ProfileService.profile()</code>.</p>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">auth.guard.ts:15</code> / <code class="font-mono">layout.component.ts:104</code> / <code class="font-mono">user.api.service.ts:61</code></p>
+          </article>
+
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <div class="flex items-center gap-3">
+              <span class="grid h-9 w-9 place-items-center rounded-md bg-accent text-sm font-bold text-white">3</span>
+              <h3 class="text-lg font-semibold">Bearer Token Interceptor</h3>
+            </div>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Every API call receives the bearer token from the interceptor. A <code class="font-mono text-accent">401</code> attempts refresh first, then logs out if refresh fails.</p>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">auth.interceptor.ts:34</code></p>
+          </article>
+
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <div class="flex items-center gap-3">
+              <span class="grid h-9 w-9 place-items-center rounded-md bg-accent text-sm font-bold text-white">4</span>
+              <h3 class="text-lg font-semibold">Route Gate</h3>
+            </div>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Routes declare <code class="font-mono text-accent">data.permissions</code>. <code class="font-mono text-accent">PermissionGuard</code> checks <code class="font-mono text-accent">hasAnyPermission(...)</code> by default and redirects to <code class="font-mono text-accent">/no-permission</code> on failure.</p>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">app.routes.ts:35</code> / <code class="font-mono">permission.guard.ts:30</code></p>
+          </article>
+
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel md:col-span-2">
+            <div class="flex items-center gap-3">
+              <span class="grid h-9 w-9 place-items-center rounded-md bg-accent text-sm font-bold text-white">5</span>
+              <h3 class="text-lg font-semibold">Visible UI Gate</h3>
+            </div>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Menu visibility and button or section visibility reuse the same effective permission set through <code class="font-mono text-accent">NavigationBarComponent</code> and <code class="font-mono text-accent">*appPermission</code>.</p>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">navigation-bar.component.ts:225</code> / <code class="font-mono">permission.directive.ts:28</code></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="entity-flow" class="mb-12 scroll-mt-20">
+        <div class="mb-5 flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-accent">Entities</p>
+            <h2 class="text-2xl font-bold">Entity Flow</h2>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="grid gap-4 xl:grid-cols-4">
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">Permission</h3>
+                <i class="fa-solid fa-fingerprint text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">The atomic capability. It belongs to an application or client through <code class="font-mono text-accent">clientId</code> and <code class="font-mono text-accent">applicationName</code>.</p>
+              <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Status flags indicate whether it is already used in roles or user groups.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">permission.type.ts:19</code> / <code class="font-mono">permission.component.html:189</code></p>
+            </article>
+
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">Role</h3>
+                <i class="fa-solid fa-user-shield text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">Application-scoped. The security page filters roles by <code class="font-mono text-accent">clientId</code>.</p>
+              <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Create and update send <code class="font-mono text-accent">permissionIds</code> directly in the <code class="font-mono text-accent">/roles</code> payload.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">role.type.ts:13</code> / <code class="font-mono">role.component.ts:72</code> / <code class="font-mono">role-create-update-dialog.component.ts:408</code></p>
+            </article>
+
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">UserGroup</h3>
+                <i class="fa-solid fa-people-group text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">Company-scoped and managed inside company detail tabs.</p>
+              <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Permissions sync in two steps: create or update the group, then assign or unassign through <code class="font-mono text-accent">/usergroups/{id}/permissions</code>.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">app.routes.ts:87</code> / <code class="font-mono">company-detail.component.ts:106</code> / <code class="font-mono">usergroup-create-update-dialog.component.ts:409</code> / <code class="font-mono">usergroup.api.service.ts:100</code></p>
+            </article>
+
+            <article class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <h3 class="font-semibold">User</h3>
+                <i class="fa-solid fa-user text-accent"></i>
+              </div>
+              <p class="text-sm leading-6 text-slate-700 dark:text-slate-300">Company-scoped. Users are created or updated with <code class="font-mono text-accent">roleIds</code>, <code class="font-mono text-accent">userGroupIds</code>, and vehicle group assignments.</p>
+              <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Later reassignment uses <code class="font-mono text-accent">/users-manager/{id}/roles</code> and <code class="font-mono text-accent">/users-manager/{id}/usergroups</code>.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">users.type.ts:42</code> / <code class="font-mono">user-create-update-dialog.component.ts:429</code> / <code class="font-mono">user-manager.api.service.ts:53</code></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="effective-flow" class="mb-12 scroll-mt-20">
+        <div class="mb-5 flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
+            <i class="fa-solid fa-code-merge"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-accent">Effective flow</p>
+            <h2 class="text-2xl font-bold">Effective Flow</h2>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="grid gap-4 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-center">
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <i class="fa-solid fa-user-shield mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Assigned Roles</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Application-scoped permission bundles attached to the user.</p>
+            </div>
+
+            <i class="fa-solid fa-plus hidden text-center text-accent lg:block"></i>
+
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/55">
+              <i class="fa-solid fa-people-group mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Assigned UserGroups</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Company-scoped groups whose permissions also contribute to the user.</p>
+            </div>
+
+            <i class="fa-solid fa-arrow-right hidden text-center text-accent lg:block"></i>
+
+            <div class="rounded-lg border border-accent/40 bg-accent/10 p-4">
+              <i class="fa-solid fa-key mb-3 text-xl text-accent"></i>
+              <h3 class="font-semibold">Flattened Permission IDs</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The backend returns the effective union, and the frontend uses that final set.</p>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-md bg-slate-50 p-4 text-sm leading-6 text-slate-700 dark:bg-slate-900/55 dark:text-slate-300">
+            <p>The current frontend flow is effectively <code class="font-mono text-accent">user &lt;- roles + usergroups</code>. Direct user-permission assignment exists in the API type, but no direct assignment UI was found in this frontend.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="effective-permissions" class="mb-12 scroll-mt-20">
+        <div class="mb-5 flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-accent">Resolution</p>
+            <h2 class="text-2xl font-bold">Effective Permission Resolution</h2>
+          </div>
+        </div>
+
+        <div class="grid gap-5 lg:grid-cols-[.85fr_1.15fr]">
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <h3 class="mb-4 text-lg font-semibold">Signed-in User</h3>
+            <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-id-card text-accent"></i>
+                <p class="font-semibold">Trusted set</p>
+              </div>
+              <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">For the signed-in user, the frontend trusts <code class="font-mono text-accent">profile.permissionIds</code> as the final flattened permission set.</p>
+              <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">profile.service.ts:11</code></p>
+            </div>
+          </div>
+
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <h3 class="mb-4 text-lg font-semibold">Inspecting Another User</h3>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+                <i class="fa-solid fa-boxes-stacked mb-3 text-accent"></i>
+                <p class="font-semibold">API shape</p>
+                <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300"><code class="font-mono text-accent">/users-manager/{id}</code> returns <code class="font-mono text-accent">roles</code>, <code class="font-mono text-accent">userGroups</code>, <code class="font-mono text-accent">directPermissions</code>, and <code class="font-mono text-accent">allPermissions</code>.</p>
+                <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">user-manager.type.ts:22</code> / <code class="font-mono">user-manager.api.service.ts:137</code></p>
+              </div>
+              <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55">
+                <i class="fa-solid fa-table-list mb-3 text-accent"></i>
+                <p class="font-semibold">Permission tab</p>
+                <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">The user detail Permission tab shows <code class="font-mono text-accent">allPermissions</code>, the final effective union.</p>
+                <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">user-detail-permission.component.ts:118</code></p>
+              </div>
+              <div class="rounded-md bg-slate-50 p-4 dark:bg-slate-900/55 sm:col-span-2">
+                <i class="fa-solid fa-code-merge mb-3 text-accent"></i>
+                <p class="font-semibold">Role Permission tab</p>
+                <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">This view rebuilds the union by source: it loads permissions from assigned roles and assigned user groups separately, merges by permission id, labels the sources, and removes overlaps.</p>
+                <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">user-detail-role-permisson.component.ts:257</code></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h3 class="text-lg font-semibold">Current frontend assignment shape</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Direct permissions exist in the API type, but this frontend does not expose direct user-permission assignment in the reviewed flow.</p>
+            </div>
+            <div class="grid gap-2 text-sm sm:grid-cols-5 sm:items-center">
+              <span class="rounded-md border border-slate-200 px-3 py-2 text-center dark:border-slate-700">Roles</span>
+              <i class="fa-solid fa-plus text-center text-accent"></i>
+              <span class="rounded-md border border-slate-200 px-3 py-2 text-center dark:border-slate-700">UserGroups</span>
+              <i class="fa-solid fa-arrow-right text-center text-accent"></i>
+              <span class="rounded-md border border-accent/40 bg-accent/10 px-3 py-2 text-center font-semibold">User permissions</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="nuances" class="scroll-mt-20">
+        <div class="mb-5 flex items-center gap-3">
+          <div class="grid h-10 w-10 place-items-center rounded-md bg-accent text-white">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-accent">Notes</p>
+            <h2 class="text-2xl font-bold">Important Nuances</h2>
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <i class="fa-solid fa-sitemap mb-4 text-xl text-accent"></i>
+            <h3 class="font-semibold">Where things live</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Only role and permission are under top-level <code class="font-mono text-accent">/security</code>. User and usergroup are managed inside <code class="font-mono text-accent">/management/company/:companyId/...</code>.</p>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">app.routes.ts:317</code> / <code class="font-mono">company-detail.component.ts:90</code></p>
+          </article>
+
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <i class="fa-solid fa-user-gear mb-4 text-xl text-accent"></i>
+            <h3 class="font-semibold">Assignment authority</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">Target user type changes the required assignment permission. Root or system-company users require <code class="font-mono text-accent">ADMIN_MANAGER.ASSIGN_*</code>; customer users require <code class="font-mono text-accent">CUSTOMER_MANAGER.ASSIGN_*</code>.</p>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400"><code class="font-mono">permission.constant.ts:42</code> / <code class="font-mono">user-detail-dialog.component.ts:167</code></p>
+          </article>
+
+          <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-soft dark:border-slate-800 dark:bg-panel">
+            <i class="fa-solid fa-toggle-on mb-4 text-xl text-accent"></i>
+            <h3 class="font-semibold">Check semantics</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">The guard and directive infrastructure supports <code class="font-mono text-accent">all</code>, but checks found in this repo are effectively OR-based through <code class="font-mono text-accent">hasAnyPermission</code> unless explicitly overridden.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
